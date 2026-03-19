@@ -3,117 +3,89 @@
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { MessageCircle, MapPin, DollarSign } from "lucide-react"
+import { MapPin } from "lucide-react"
+import { propertyListings, type PropertyListing } from "@/lib/property-data"
 
-const properties = [
-  {
-    id: 1,
-    location: "East Legon",
-    price: "GH₵ 150,000 - 250,000",
-    image: "/modern-residential-property-in-east-legon-accra-gh.jpg",
-    type: "3-4 Bedroom Residential",
-  },
-  {
-    id: 2,
-    location: "Airport Residential Area",
-    price: "GH₵ 200,000 - 350,000",
-    image: "/luxury-residential-property-airport-area-accra.jpg",
-    type: "4-5 Bedroom Homes",
-  },
-  {
-    id: 3,
-    location: "Spintex Road",
-    price: "GH₵ 100,000 - 180,000",
-    image: "/affordable-residential-property-spintex-accra.jpg",
-    type: "Affordable Options",
-  },
-  {
-    id: 4,
-    location: "Cantonments",
-    price: "GH₵ 300,000+",
-    image: "/premium-luxury-property-cantonments-accra.jpg",
-    type: "Premium Properties",
-  },
-  {
-    id: 5,
-    location: "Dzorwulu",
-    price: "GH₵ 180,000 - 280,000",
-    image: "/modern-house-dzorwulu-neighborhood-accra.jpg",
-    type: "3-4 Bedroom Homes",
-  },
-  {
-    id: 6,
-    location: "Labone",
-    price: "GH₵ 250,000 - 400,000",
-    image: "/beachfront-residential-property-labone-accra.jpg",
-    type: "Waterfront Living",
-  },
-]
+interface FeaturedPropertiesProps {
+  onBookViewing: (property: PropertyListing) => void
+}
 
-export default function FeaturedProperties() {
+export default function FeaturedProperties({ onBookViewing }: FeaturedPropertiesProps) {
   return (
-    <section id="properties" className="py-20 px-4 bg-background">
-      <div className="max-w-6xl mx-auto">
+    <section id="properties" className="scroll-mt-28 bg-background px-4 py-20">
+      <div className="mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="mb-16 text-center"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Featured Properties</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Handpicked verified listings across Accra's most sought-after neighborhoods.
+          <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl">Available Homes Ready for Viewing</h2>
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+            Pick a property, tap Book Viewing, and move straight into WhatsApp with your interest already structured.
           </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-sm text-muted-foreground">
+            <span className="rounded-full bg-muted/50 px-4 py-2">Name required</span>
+            <span className="rounded-full bg-muted/50 px-4 py-2">Budget optional</span>
+            <span className="rounded-full bg-muted/50 px-4 py-2">Property auto-filled</span>
+          </div>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {properties.map((property, i) => (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {propertyListings.map((property, index) => (
             <motion.div
               key={property.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
+              transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
             >
-              <Card className="overflow-hidden border-border/50 shadow-sm hover:shadow-lg transition-shadow h-full flex flex-col">
-                <div className="relative h-48 overflow-hidden bg-muted">
+              <Card className="flex h-full flex-col overflow-hidden border-border/50 shadow-sm transition-shadow hover:shadow-lg">
+                <div className="relative h-52 overflow-hidden bg-muted">
                   <motion.img
                     src={property.image}
-                    alt={property.location}
-                    className="w-full h-full object-cover"
+                    alt={property.name}
+                    className="h-full w-full object-cover"
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.3 }}
                   />
+                  <div className="absolute left-4 top-4 rounded-full bg-secondary px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-secondary-foreground">
+                    {property.badge}
+                  </div>
                 </div>
 
-                <CardContent className="flex-1 flex flex-col p-5">
-                  <div className="space-y-3 flex-1">
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <p className="text-sm font-semibold text-secondary uppercase tracking-wide">{property.type}</p>
-                        <h3 className="text-lg font-bold text-foreground flex items-center gap-1 mt-1">
-                          <MapPin className="w-4 h-4 text-primary" />
-                          {property.location}
-                        </h3>
-                      </div>
+                <CardContent className="flex flex-1 flex-col p-5">
+                  <div className="flex flex-1 flex-col">
+                    <div className="flex items-start justify-between gap-3">
+                      <p className="rounded-full bg-primary/8 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                        {property.type}
+                      </p>
+                      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                        {property.urgency}
+                      </p>
                     </div>
 
-                    <div className="flex items-center gap-2 text-primary font-semibold">
-                      <DollarSign className="w-4 h-4" />
+                    <div className="mt-4 min-h-[5.75rem]">
+                      <h3 className="text-xl font-bold leading-tight text-foreground">{property.name}</h3>
+                      <p className="mt-3 flex items-center gap-1 text-sm text-muted-foreground">
+                        <MapPin className="h-4 w-4 text-primary" />
+                        {property.location}
+                      </p>
+                    </div>
+
+                    <div className="mt-4 border-t border-border/60 pt-4 font-semibold text-primary">
                       <span>{property.price}</span>
                     </div>
+
+                    <p className="mt-4 min-h-[3rem] text-sm leading-relaxed text-muted-foreground line-clamp-2">
+                      {property.summary}
+                    </p>
                   </div>
 
                   <Button
-                    className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground mt-4 flex items-center gap-2"
-                    onClick={() =>
-                      window.open(
-                        `https://wa.me/233552402768?text=Hi%20PrimeEdge%20Realty!%20I%20am%20interested%20in%20the%20${property.location}%20property.`,
-                        "_blank",
-                      )
-                    }
+                    className="mt-5 w-full bg-secondary text-secondary-foreground hover:bg-secondary/90"
+                    onClick={() => onBookViewing(property)}
                   >
-                    <MessageCircle className="w-4 h-4" />
-                    Inquire on WhatsApp
+                    Book Viewing
                   </Button>
                 </CardContent>
               </Card>
