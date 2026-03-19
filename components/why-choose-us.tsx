@@ -14,7 +14,7 @@ const features = [
 
 export default function WhyChooseUs() {
   return (
-    <section className="py-20 px-4 bg-muted/30">
+    <section id="why-us" className="scroll-mt-28 bg-muted/30 px-4 py-20">
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0 }}
